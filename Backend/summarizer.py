@@ -58,7 +58,12 @@ def analyze_sentiment(text: str) -> dict:
     if not raw_text:
         return {"sentiment": "Neutral", "score": 0.0}
 
-    scores = SIA.polarity_scores(raw_text)
+    try:
+        scores = SIA.polarity_scores(raw_text)
+    except Exception as e:
+        logger.warning(f"Sentiment analysis failed: {e}")
+        scores = {}
+
     compound_score = round(float(scores.get("compound", 0.0)), 2)
 
     if compound_score >= 0.05:
@@ -81,7 +86,11 @@ def preprocess_text(text: str) -> str:
 
 def tokenize_sentences(text: str) -> list[str]:
     """Split text into sentences using NLTK's punkt tokenizer."""
-    sentences = sent_tokenize(text)
+    try:
+        sentences = sent_tokenize(text)
+    except LookupError:
+        logger.warning("NLTK punkt missing. Falling back to regex split.")
+        sentences = re.split(r'(?<=[.!?])\s+', text)
     return [sentence.strip() for sentence in sentences if sentence.strip()]
 
 

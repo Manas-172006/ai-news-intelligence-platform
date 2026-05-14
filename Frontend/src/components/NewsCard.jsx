@@ -4,7 +4,7 @@ import axios from 'axios'
 import SummaryBox from './SummaryBox'
 import { stripHtml } from '../utils/sanitize.js'
 
-const apiBaseUrl = (import.meta.env.VITE_API_BASE_URL || '').trim()
+const apiBaseUrl = (import.meta.env.VITE_API_BASE_URL || '').trim().replace(/\/+$/, '')
 const isApiUrlDefined = Boolean(apiBaseUrl)
 
 console.log('API URL:', apiBaseUrl, 'mode:', import.meta.env.MODE)

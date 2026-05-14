@@ -6,7 +6,7 @@ import Hero from '../components/Hero.jsx'
 import Navbar from '../components/Navbar.jsx'
 import NewsCard from '../components/NewsCard.jsx'
 
-const apiBaseUrl = (import.meta.env.VITE_API_BASE_URL || '').trim()
+const apiBaseUrl = (import.meta.env.VITE_API_BASE_URL || '').trim().replace(/\/+$/, '')
 const isApiUrlDefined = Boolean(apiBaseUrl)
 
 console.log('API URL:', apiBaseUrl, 'mode:', import.meta.env.MODE)

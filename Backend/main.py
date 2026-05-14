@@ -118,9 +118,13 @@ async def summarize_text(request: SummarizeRequest):
         logger.warning("Empty text provided to summarize endpoint")
         raise HTTPException(status_code=400, detail="Text field cannot be empty")
 
-    result = generate_summary(request.text)
-    logger.info("Summary generated successfully")
-    return result
+    try:
+        result = generate_summary(request.text)
+        logger.info("Summary generated successfully")
+        return result
+    except Exception as e:
+        logger.error(f"Error during summarization: {str(e)}")
+        raise HTTPException(status_code=500, detail="Internal server error during summarization")
 
 
 # ============================================================================
