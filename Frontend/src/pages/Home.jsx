@@ -6,8 +6,10 @@ import Hero from '../components/Hero.jsx'
 import Navbar from '../components/Navbar.jsx'
 import NewsCard from '../components/NewsCard.jsx'
 
-const apiBaseUrl = import.meta.env.VITE_API_URL
+const apiBaseUrl = (import.meta.env.VITE_API_URL || '').trim()
+const isApiUrlDefined = Boolean(apiBaseUrl)
 
+console.log('API URL:', apiBaseUrl, 'mode:', import.meta.env.MODE)
 if (!apiBaseUrl) {
   console.error('VITE_API_URL environment variable is not set!')
 }
@@ -16,6 +18,7 @@ const Home = () => {
   const [articles, setArticles] = useState([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [configError, setConfigError] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
   const itemsPerPage = 9
 
@@ -31,11 +34,19 @@ const Home = () => {
   }
 
   const fetchNews = async (retryCount = 0) => {
+    if (!isApiUrlDefined) {
+      const configMessage = 'VITE_API_URL is missing in production configuration. Please set this variable in Vercel and redeploy.'
+      console.error(configMessage)
+      setConfigError(configMessage)
+      setError(configMessage)
+      return
+    }
+
     setLoading(true)
     setError('')
 
     try {
-      console.log(`Fetching news (attempt ${retryCount + 1})`)
+      console.log(`Fetching news (attempt ${retryCount + 1})`, `${apiBaseUrl}/news`)
       const response = await axios.get(`${apiBaseUrl}/news`, { timeout: 30000 }) // 30 second timeout
       const fetchedArticles = response?.data?.articles ?? []
 
@@ -69,6 +80,11 @@ const Home = () => {
   }
 
   useEffect(() => {
+    if (!isApiUrlDefined) {
+      setConfigError('VITE_API_URL is missing in production configuration. Please set this variable in Vercel.')
+      return
+    }
+
     fetchNews()
   }, [])
 

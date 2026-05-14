@@ -4,8 +4,10 @@ import axios from 'axios'
 import SummaryBox from './SummaryBox'
 import { stripHtml } from '../utils/sanitize.js'
 
-const apiBaseUrl = import.meta.env.VITE_API_URL
+const apiBaseUrl = (import.meta.env.VITE_API_URL || '').trim()
+const isApiUrlDefined = Boolean(apiBaseUrl)
 
+console.log('API URL:', apiBaseUrl, 'mode:', import.meta.env.MODE)
 if (!apiBaseUrl) {
   console.error('VITE_API_URL environment variable is not set!')
 }
@@ -35,8 +37,17 @@ const NewsCard = ({ article }) => {
     setShowSummary(false)
 
     try {
-      console.log('Sending summarize request...')
-      const response = await axios.post(`${apiBaseUrl}/summarize`, {
+      if (!isApiUrlDefined) {
+        const envMessage = 'VITE_API_URL is missing in production configuration. Please set this variable in Vercel.'
+        console.error(envMessage)
+        setError(envMessage)
+        setLoading(false)
+        return
+      }
+
+      const summarizeUrl = `${apiBaseUrl}/summarize`
+      console.log('Sending summarize request to:', summarizeUrl)
+      const response = await axios.post(summarizeUrl, {
         text,
       }, { timeout: 30000 }) // 30 second timeout
 
