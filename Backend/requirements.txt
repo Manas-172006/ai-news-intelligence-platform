@@ -2,38 +2,16 @@
 # ================================================
 #
 # FastAPI Backend Requirements
-# Update your Backend/requirements.txt with these dependencies
-#
-# Install all at once:
-#   pip install -r requirements.txt
-#
-# Or install individually:
-#   pip install fastapi==0.104.1
-#   pip install uvicorn[standard]==0.24.0
-#   pip install pydantic==2.5.0
-#   pip install numpy==1.26.4
-#   pip install scikit-learn==1.4.2
-#   pip install nltk==3.8.1
-#   pip install python-dotenv==1.0.0
-#   pip install aiohttp==3.9.1
+# Simplified for Render deployment compatibility
 #
 # ================================================
 
-# Core Framework
-fastapi==0.104.1              # Web framework for REST APIs
-uvicorn[standard]==0.24.0     # ASGI server to run FastAPI
-pydantic==2.5.0               # Data validation and settings
-
-# News API
-aiohttp==3.9.1                # Async HTTP client for NewsAPI requests
-
-# NLP and Machine Learning
-nltk==3.8.1                   # Natural Language Toolkit for tokenization
-scikit-learn==1.4.2           # Machine learning library (TF-IDF, cosine similarity)
-numpy==1.26.4                 # Numerical computing (required by sklearn)
-
-# Environment Management
-python-dotenv==1.0.0          # Load environment variables from .env file
-
-# Optional but recommended
-requests==2.31.0                # HTTP library for news fetching and testing
+fastapi
+uvicorn
+requests
+python-dotenv
+nltk
+scikit-learn
+numpy
+aiohttp
+pydantic
