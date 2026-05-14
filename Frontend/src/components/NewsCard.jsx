@@ -4,7 +4,11 @@ import axios from 'axios'
 import SummaryBox from './SummaryBox'
 import { stripHtml } from '../utils/sanitize.js'
 
-const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000'
+const apiBaseUrl = import.meta.env.VITE_API_URL
+
+if (!apiBaseUrl) {
+  console.error('VITE_API_URL environment variable is not set!')
+}
 
 const NewsCard = ({ article }) => {
   const [showSummary, setShowSummary] = useState(false)
@@ -31,9 +35,10 @@ const NewsCard = ({ article }) => {
     setShowSummary(false)
 
     try {
+      console.log('Sending summarize request...')
       const response = await axios.post(`${apiBaseUrl}/summarize`, {
         text,
-      })
+      }, { timeout: 30000 }) // 30 second timeout
 
       const summary = response?.data?.summary ?? ''
       const sentimentLabel = response?.data?.sentiment ?? ''
@@ -59,11 +64,13 @@ const NewsCard = ({ article }) => {
         setShowSummary(true)
       }
     } catch (apiError) {
+      console.error('Summarize API error:', apiError)
+      console.error('Error response:', apiError.response)
       const message =
         apiError.response?.data?.error ||
         apiError.response?.data?.detail ||
         apiError.message ||
-        'Unable to generate summary. Please try again.'
+        'Unable to generate summary. The backend may be starting up. Please try again.'
       setError(message)
     } finally {
       setLoading(false)

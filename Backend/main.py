@@ -34,10 +34,10 @@ app = FastAPI(
 # Configure CORS (allow requests from React frontend)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.cors_origins,
+    allow_origins=["*"],  # Allow all origins for production compatibility
     allow_credentials=True,
     allow_methods=["*"],
-    expose_headers=["*"],
+    allow_headers=["*"],
 )
 
 
@@ -62,6 +62,7 @@ async def health_check():
     Returns:
         dict: Status message
     """
+    logger.info("Health check endpoint called")
     return {
         "status": "ok",
         "message": "News Summarization API is running",
@@ -112,10 +113,13 @@ async def get_news(query: str = "technology"):
 @app.post("/summarize", tags=["Summarization"])
 async def summarize_text(request: SummarizeRequest):
     """Generate an extractive summary and sentiment metadata from article text."""
+    logger.info("Summarize endpoint called")
     if not request.text or not request.text.strip():
+        logger.warning("Empty text provided to summarize endpoint")
         raise HTTPException(status_code=400, detail="Text field cannot be empty")
 
     result = generate_summary(request.text)
+    logger.info("Summary generated successfully")
     return result
 
 

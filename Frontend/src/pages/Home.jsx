@@ -6,7 +6,11 @@ import Hero from '../components/Hero.jsx'
 import Navbar from '../components/Navbar.jsx'
 import NewsCard from '../components/NewsCard.jsx'
 
-const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000'
+const apiBaseUrl = import.meta.env.VITE_API_URL
+
+if (!apiBaseUrl) {
+  console.error('VITE_API_URL environment variable is not set!')
+}
 
 const Home = () => {
   const [articles, setArticles] = useState([])
@@ -26,12 +30,13 @@ const Home = () => {
     document.getElementById('news')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
 
-  const fetchNews = async () => {
+  const fetchNews = async (retryCount = 0) => {
     setLoading(true)
     setError('')
 
     try {
-      const response = await axios.get(`${apiBaseUrl}/news`)
+      console.log(`Fetching news (attempt ${retryCount + 1})`)
+      const response = await axios.get(`${apiBaseUrl}/news`, { timeout: 30000 }) // 30 second timeout
       const fetchedArticles = response?.data?.articles ?? []
 
       if (!Array.isArray(fetchedArticles) || fetchedArticles.length === 0) {
@@ -42,11 +47,21 @@ const Home = () => {
         setCurrentPage(1)
       }
     } catch (fetchError) {
+      console.error('News fetch error:', fetchError)
+      console.error('Error response:', fetchError.response)
+
+      // Retry once on failure (for cold starts)
+      if (retryCount === 0 && fetchError.code !== 'ECONNABORTED') {
+        console.log('Retrying news fetch after failure...')
+        setTimeout(() => fetchNews(1), 2000) // Wait 2 seconds then retry
+        return
+      }
+
       setError(
         fetchError.response?.data?.error ||
         fetchError.response?.data?.detail ||
         fetchError.message ||
-        'Unable to load live news. Make sure the backend is running.'
+        'Unable to load live news. The backend may be starting up (cold start). Please try again in a few seconds.'
       )
     } finally {
       setLoading(false)
