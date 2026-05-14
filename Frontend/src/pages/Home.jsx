@@ -6,12 +6,12 @@ import Hero from '../components/Hero.jsx'
 import Navbar from '../components/Navbar.jsx'
 import NewsCard from '../components/NewsCard.jsx'
 
-const apiBaseUrl = (import.meta.env.VITE_API_URL || '').trim()
+const apiBaseUrl = (import.meta.env.VITE_API_BASE_URL || '').trim()
 const isApiUrlDefined = Boolean(apiBaseUrl)
 
 console.log('API URL:', apiBaseUrl, 'mode:', import.meta.env.MODE)
 if (!apiBaseUrl) {
-  console.error('VITE_API_URL environment variable is not set!')
+  console.error('VITE_API_BASE_URL environment variable is not set!')
 }
 
 const Home = () => {
@@ -35,7 +35,7 @@ const Home = () => {
 
   const fetchNews = async (retryCount = 0) => {
     if (!isApiUrlDefined) {
-      const configMessage = 'VITE_API_URL is missing in production configuration. Please set this variable in Vercel and redeploy.'
+      const configMessage = 'VITE_API_BASE_URL is missing in production configuration. Please set this variable in Vercel and redeploy.'
       console.error(configMessage)
       setConfigError(configMessage)
       setError(configMessage)
@@ -81,7 +81,7 @@ const Home = () => {
 
   useEffect(() => {
     if (!isApiUrlDefined) {
-      setConfigError('VITE_API_URL is missing in production configuration. Please set this variable in Vercel.')
+      setConfigError('VITE_API_BASE_URL is missing in production configuration. Please set this variable in Vercel.')
       return
     }
 

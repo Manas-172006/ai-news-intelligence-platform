@@ -18,8 +18,18 @@ from sklearn.metrics.pairwise import cosine_similarity
 logger = logging.getLogger(__name__)
 
 
+import os
+
 def download_nltk_resources():
     """Download required NLTK models if they are missing."""
+    # Ensure a writable directory exists for NLTK data (Render has /tmp as writable)
+    nltk_data_dir = os.environ.get('NLTK_DATA', '/tmp/nltk_data')
+    os.makedirs(nltk_data_dir, exist_ok=True)
+    
+    # Append it to NLTK's data path if not already there
+    if nltk_data_dir not in nltk.data.path:
+        nltk.data.path.append(nltk_data_dir)
+
     resources = [
         ("tokenizers/punkt", "punkt"),
         ("corpora/stopwords", "stopwords"),
@@ -30,8 +40,11 @@ def download_nltk_resources():
         try:
             nltk.data.find(resource)
         except LookupError:
-            logger.info(f"Downloading NLTK resource: {package}")
-            nltk.download(package, quiet=True)
+            logger.info(f"Downloading NLTK resource: {package} to {nltk_data_dir}")
+            try:
+                nltk.download(package, download_dir=nltk_data_dir, quiet=True)
+            except Exception as e:
+                logger.error(f"Failed to download NLTK resource {package}: {e}")
 
 
 download_nltk_resources()

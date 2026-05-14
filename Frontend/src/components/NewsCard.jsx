@@ -4,12 +4,12 @@ import axios from 'axios'
 import SummaryBox from './SummaryBox'
 import { stripHtml } from '../utils/sanitize.js'
 
-const apiBaseUrl = (import.meta.env.VITE_API_URL || '').trim()
+const apiBaseUrl = (import.meta.env.VITE_API_BASE_URL || '').trim()
 const isApiUrlDefined = Boolean(apiBaseUrl)
 
 console.log('API URL:', apiBaseUrl, 'mode:', import.meta.env.MODE)
 if (!apiBaseUrl) {
-  console.error('VITE_API_URL environment variable is not set!')
+  console.error('VITE_API_BASE_URL environment variable is not set!')
 }
 
 const NewsCard = ({ article }) => {
@@ -38,7 +38,7 @@ const NewsCard = ({ article }) => {
 
     try {
       if (!isApiUrlDefined) {
-        const envMessage = 'VITE_API_URL is missing in production configuration. Please set this variable in Vercel.'
+        const envMessage = 'VITE_API_BASE_URL is missing in production configuration. Please set this variable in Vercel.'
         console.error(envMessage)
         setError(envMessage)
         setLoading(false)
