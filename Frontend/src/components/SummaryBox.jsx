@@ -10,15 +10,15 @@ const SummaryBox = ({ summaryText, sentiment, score, keywords = [], isLoading })
       : 'bg-slate-500/10 text-slate-300 border border-slate-500/20'
 
   return (
-    <div className="mt-5 rounded-3xl border border-slate-800/90 bg-slate-950/90 p-5 text-left shadow-lg shadow-slate-950/40 transition duration-300">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+    <div className="mt-5 rounded-[2rem] border border-slate-800/90 bg-slate-900/95 p-6 text-left shadow-[0_30px_90px_-40px_rgba(6,182,212,0.18)] transition duration-300">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <p className="text-sm uppercase tracking-[0.24em] text-indigo-300">Article summary</p>
+          <p className="text-sm uppercase tracking-[0.28em] text-indigo-300">Article summary</p>
           <h3 className="mt-2 text-lg font-semibold text-white">Executive summary</h3>
         </div>
         <div className="flex items-center gap-2">
           {isLoading ? (
-            <div className="inline-flex items-center gap-3 rounded-full border border-slate-800/80 bg-slate-900 px-3 py-2 text-sm text-slate-300">
+            <div className="inline-flex items-center gap-3 rounded-full border border-slate-800/80 bg-slate-950/80 px-3 py-2 text-sm text-slate-300">
               <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-slate-300 border-t-transparent" />
               Generating summary...
             </div>
@@ -32,7 +32,7 @@ const SummaryBox = ({ summaryText, sentiment, score, keywords = [], isLoading })
           )}
         </div>
       </div>
-      <p className="mt-4 text-sm leading-7 text-slate-300">
+      <p className="mt-5 text-sm leading-7 text-slate-300">
         {summaryText}
       </p>
 
@@ -41,7 +41,7 @@ const SummaryBox = ({ summaryText, sentiment, score, keywords = [], isLoading })
           {keywords.map((keyword) => (
             <span
               key={keyword}
-              className="rounded-full bg-slate-800 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-slate-200"
+              className="rounded-full bg-slate-800/80 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-slate-200"
             >
               {keyword}
             </span>

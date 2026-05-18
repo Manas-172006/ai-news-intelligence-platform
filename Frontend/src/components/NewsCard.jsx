@@ -95,48 +95,58 @@ const NewsCard = ({ article }) => {
 
   return (
     <motion.article
-      className="group flex flex-col h-full overflow-hidden rounded-[2rem] border border-slate-800/90 bg-slate-950/90 shadow-soft hover:shadow-[0_0_30px_-5px_rgba(6,182,212,0.3)] hover:border-cyan-500/30 transition-all duration-300 relative z-0"
-      whileHover={{ y: -8, scale: 1.02 }}
-      transition={{ type: "spring", stiffness: 300, damping: 20 }}
+      className="group relative flex flex-col h-full overflow-hidden rounded-[2rem] border border-slate-800/90 bg-slate-950/95 shadow-[0_30px_80px_-40px_rgba(6,182,212,0.18)] transition-all duration-300 will-change-transform hover:-translate-y-1 hover:shadow-[0_35px_100px_-35px_rgba(6,182,212,0.24)]"
+      whileHover={{ y: -6, scale: 1.01 }}
+      transition={{ type: 'spring', stiffness: 260, damping: 30 }}
     >
+      <div className="pointer-events-none absolute inset-x-6 top-6 z-0 h-12 rounded-full bg-gradient-to-r from-cyan-500/20 via-transparent to-indigo-500/20 blur-2xl opacity-40 transition-opacity duration-500 group-hover:opacity-100" />
       <motion.div
-        className="overflow-hidden rounded-[1.75rem] bg-slate-900"
-        whileHover={{ scale: 1.05 }}
-        transition={{ duration: 0.3 }}
+        className="relative overflow-hidden rounded-[1.75rem] bg-slate-900"
+        whileHover={{ scale: 1.04 }}
+        transition={{ duration: 0.4 }}
       >
         <img
           src={imageUrl}
           alt={article.title}
-          className="h-52 w-full object-cover"
+          className="h-56 w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
         />
+        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-slate-950/90 to-transparent" />
       </motion.div>
-      <div className="space-y-4 p-6">
-        <div>
-          <p className="text-sm font-bold uppercase tracking-[0.18em] text-cyan-400">
+
+      <div className="space-y-5 p-6">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+          <span className="inline-flex items-center rounded-full border border-cyan-400/20 bg-slate-900/80 px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.24em] text-cyan-300 shadow-[0_10px_35px_-25px_rgba(6,182,212,0.35)]">
             {article.category || article.source?.name || 'News'}
-          </p>
-          <h2 className="mt-3 text-xl font-bold text-white line-clamp-2 group-hover:text-cyan-300 transition-colors">
+          </span>
+          {article.publishedAt && (
+            <span className="text-[11px] font-semibold uppercase tracking-[0.32em] text-slate-500">
+              {new Date(article.publishedAt).toLocaleDateString()}
+            </span>
+          )}
+        </div>
+
+        <div className="space-y-4">
+          <h2 className="text-xl font-semibold text-white leading-tight line-clamp-2 transition-colors duration-300 group-hover:text-cyan-300">
             {stripHtml(article.title || '')}
           </h2>
-        </div>
-        <div className="flex-grow space-y-4">
-          <p className="text-sm leading-relaxed text-slate-400 line-clamp-3">
+          <p className="text-sm leading-7 text-slate-400 line-clamp-3">
             {subtitle}
           </p>
           {safeContent && safeContent !== subtitle && (
-            <p className="text-sm leading-relaxed text-slate-400 opacity-80 line-clamp-2">
+            <p className="text-sm leading-7 text-slate-400/80 line-clamp-2">
               {safeContent}
             </p>
           )}
         </div>
-        <div className="flex flex-col gap-3 mt-auto pt-4 sm:flex-row sm:items-center sm:justify-between border-t border-slate-800/50">
+
+        <div className="mt-auto space-y-4 pt-4 border-t border-slate-800/60 sm:space-y-0 sm:flex sm:items-center sm:justify-between">
           <motion.button
             type="button"
             onClick={handleSummarize}
-            className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-indigo-600 to-cyan-600 px-5 py-2.5 text-sm font-bold text-white transition hover:from-indigo-500 hover:to-cyan-500 disabled:cursor-not-allowed disabled:opacity-60 shadow-[0_0_15px_-3px_rgba(6,182,212,0.3)] hover:shadow-[0_0_20px_-3px_rgba(6,182,212,0.5)]"
+            className="inline-flex min-w-[10rem] items-center justify-center rounded-full bg-gradient-to-r from-indigo-600 to-cyan-600 px-5 py-3 text-sm font-semibold text-white shadow-[0_14px_40px_-20px_rgba(6,182,212,0.35)] transition duration-300 hover:from-indigo-500 hover:to-cyan-500 disabled:cursor-not-allowed disabled:opacity-60"
             disabled={loading}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            whileHover={{ scale: 1.04 }}
+            whileTap={{ scale: 0.96 }}
           >
             {loading ? (
               <>
@@ -151,23 +161,25 @@ const NewsCard = ({ article }) => {
             href={article.url}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex items-center justify-center rounded-full border border-slate-700 bg-slate-900 px-5 py-2.5 text-sm font-semibold text-slate-300 transition hover:border-cyan-400 hover:text-cyan-400 hover:shadow-[0_0_15px_-3px_rgba(6,182,212,0.2)]"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            className="inline-flex items-center justify-center rounded-full border border-slate-700 bg-slate-900 px-5 py-3 text-sm font-semibold text-slate-300 transition duration-300 hover:border-cyan-400 hover:text-cyan-300 hover:shadow-[0_18px_40px_-26px_rgba(6,182,212,0.18)]"
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.96 }}
           >
             Read Source
           </motion.a>
         </div>
+
         {error && (
           <motion.div
             initial={{ opacity: 0, y: 5 }}
             animate={{ opacity: 1, y: 0 }}
-            className="rounded-xl border border-rose-500/20 bg-rose-500/10 p-4 text-sm text-rose-200 mt-2 flex items-start gap-3 backdrop-blur-sm"
+            className="rounded-3xl border border-rose-500/20 bg-rose-500/10 p-4 text-sm text-rose-200 mt-2 flex items-start gap-3 backdrop-blur-sm"
           >
             <span className="text-rose-400">⚠️</span>
             <p>{error}</p>
           </motion.div>
         )}
+
         {showSummary && !loading && (
           <motion.div
             initial={{ opacity: 0, y: 10 }}

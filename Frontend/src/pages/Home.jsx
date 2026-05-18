@@ -124,9 +124,16 @@ const Home = () => {
   }, [articles])
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-slate-100">
+    <div className="relative min-h-screen overflow-hidden bg-slate-950 text-slate-100">
       <Navbar />
-      <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+      <div className="pointer-events-none absolute inset-0 -z-10">
+        <div className="absolute left-1/2 top-20 h-[480px] w-[480px] -translate-x-1/2 rounded-full bg-cyan-500/10 blur-3xl opacity-60 animate-float" />
+        <div className="absolute right-0 top-44 h-[360px] w-[360px] rounded-full bg-violet-500/10 blur-3xl opacity-55 animate-float" />
+        <div className="absolute left-10 bottom-10 h-[360px] w-[360px] rounded-full bg-indigo-500/08 blur-3xl opacity-40 animate-float" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(64,119,194,0.12),transparent_20%),radial-gradient(circle_at_80%_20%,rgba(20,184,166,0.08),transparent_18%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.04)_1px,transparent_1px)] bg-[size:96px_96px] opacity-10" />
+      </div>
+      <main className="relative mx-auto max-w-7xl px-4 pt-28 pb-16 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -213,7 +220,7 @@ const Home = () => {
               type="button"
               onClick={fetchNews}
               disabled={loading}
-              className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-indigo-600 to-emerald-600 px-5 py-3 text-sm font-semibold text-white transition hover:from-indigo-700 hover:to-emerald-700 disabled:cursor-not-allowed disabled:opacity-60 shadow-lg"
+              className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-indigo-600 to-cyan-500 px-5 py-3 text-sm font-semibold text-white transition duration-300 hover:from-indigo-500 hover:to-cyan-400 disabled:cursor-not-allowed disabled:opacity-60 shadow-[0_20px_60px_-28px_rgba(56,189,248,0.45)]"
             >
               {loading ? 'Refreshing...' : 'Refresh news'}
             </motion.button>
