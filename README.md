@@ -1,4 +1,4 @@
-#Example vercel link 
+#vercel link 
  https://ai-news-intelligence-platform-tawny.vercel.app/
 
  ( please wait for 15-20 seconds and refresh for NewsAPI to respond )
