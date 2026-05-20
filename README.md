@@ -1,5 +1,7 @@
 #Example vercel link 
  https://ai-news-intelligence-platform-tawny.vercel.app/
+
+ ( please wait for 15-20 seconds and refresh for NewsAPI to respond )
 # AI-Powered News Summarization System
 
 A full-stack news summarization project using React, Tailwind CSS, Axios, FastAPI, and Python NLP.
